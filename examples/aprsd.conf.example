@@ -1,0 +1,8 @@
+# APRSD 5.x example fragment.
+# Exact configuration syntax can vary by APRSD deployment; the SMSBR v0.1
+# prototype reads its own options from environment variables.
+
+[DEFAULT]
+enabled_plugins = aprsd_smsbr.plugin.SMSBRPlugin
+
+# Then export the variables shown in ../.env.example before starting APRSD.

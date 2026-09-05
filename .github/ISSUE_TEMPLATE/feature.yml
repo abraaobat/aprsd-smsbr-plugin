@@ -1,0 +1,13 @@
+name: Feature
+about: Propose an SMSBR feature
+body:
+  - type: textarea
+    attributes:
+      label: Goal
+      description: What APRS/SMS workflow should this enable?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Safety impact
+      description: Authorization, abuse, privacy, cost or RF implications.

@@ -1,0 +1,17 @@
+name: Bug
+about: Report an SMSBR defect
+body:
+  - type: input
+    attributes:
+      label: SMSBR version
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: APRSD version, Raspberry Pi/DigiPi, Dire Wolf/KISS path, provider.
