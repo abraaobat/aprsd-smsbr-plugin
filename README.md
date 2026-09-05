@@ -1,7 +1,6 @@
 # SMSBR — APRSD Brazilian SMS Gateway
 
-> **Status: pre-alpha / safe scaffold.** The default provider is `dry-run`; this
-> repository does not send real SMS yet.
+> **Status: pre-alpha / safe scaffold (`0.1.0a0`).** The default provider is `dry-run`; this repository does not send real SMS yet.
 
 SMSBR is an open-source APRSD plugin project for bridging APRS messages to Brazilian
 SMS destinations (`+55`). It is designed to work with APRSD and, through APRSD's
@@ -102,6 +101,27 @@ See `examples/aprsd.conf.example` and `docs/roadmap.md`.
 
 The APRSD adapter will be validated against the exact current APRSD 5.x plugin API
 before the first real SMS provider is enabled.
+
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [Protocol](docs/protocol.md)
+- [Security design](docs/security.md)
+- [Roadmap](docs/roadmap.md)
+- [ADR-0001 — project boundaries and provider safety](docs/decisions/ADR-0001-project-boundaries.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+
+## Governance
+
+- Git is the source of history.
+- `pyproject.toml` is the canonical Python package version source.
+- Changes use short branches and Conventional Commits.
+- Architecture decisions that are difficult to reverse require ADRs.
+- CI runs Ruff and pytest on supported Python versions.
+- Roadmap and documentation must move with behavior or architecture changes.
+- Safe defaults must not be weakened silently.
 
 ## License
 
