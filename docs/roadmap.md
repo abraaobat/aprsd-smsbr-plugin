@@ -7,6 +7,9 @@
 - README + architecture/protocol/security docs
 - Python package scaffold
 - GitHub Actions CI
+- Changelog
+- ADR baseline
+- Pull request governance checklist
 
 ## F1 — Safe outbound core 🟡
 
