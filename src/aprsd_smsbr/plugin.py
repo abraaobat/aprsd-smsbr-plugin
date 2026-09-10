@@ -1,42 +1,77 @@
-"""APRSD adapter for SMSBR.
+"""APRSD 5.x adapter for SMSBR.
 
-The core service is intentionally transport-independent. This adapter follows the
-APRSD command-plugin API used by the APRSD plugin ecosystem. It is kept thin so
-future APRSD API changes do not affect the SMSBR domain logic.
+The SMS domain service remains transport-independent. This module only adapts
+APRSD MessagePacket handling and oslo.config settings to that service.
 """
 
 from __future__ import annotations
 
-from aprsd import plugin
+import logging
 
+from aprsd import packets, plugin
+from oslo_config import cfg
+
+from . import __version__
+from . import conf  # noqa: F401 - importing registers SMSBR oslo.config options
 from .authorization import AuthorizationPolicy
 from .config import SMSBRConfig
 from .providers import DryRunSMSProvider
 from .ratelimit import SlidingWindowRateLimiter
 from .service import SMSBRService
 
+CONF = cfg.CONF
+LOG = logging.getLogger("APRSD")
 
-class SMSBRPlugin(plugin.APRSDPluginBase):
+
+class SMSBRPlugin(plugin.APRSDRegexCommandPluginBase):
     """Send a Brazilian SMS using ``@DESTINO mensagem``."""
 
-    version = "0.1.0a0"
+    version = __version__
     command_regex = r"^@.+"
     command_name = "smsbr"
+    short_description = "Send an SMS to a Brazilian mobile destination"
+    enabled = False
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        cfg = SMSBRConfig.from_env()
-        if cfg.provider != "dry-run":
-            raise RuntimeError(
-                "Only SMSBR_PROVIDER=dry-run is implemented in v0.1.0a0"
+    def setup(self):
+        try:
+            config = SMSBRConfig.from_conf(CONF)
+        except Exception as exc:
+            LOG.error("Invalid SMSBR configuration: %s", exc)
+            self.enabled = False
+            return False
+
+        if not config.enabled:
+            self.enabled = False
+            LOG.info("SMSBR plugin is disabled in config")
+            return False
+
+        if config.provider != "dry-run":
+            LOG.error(
+                "Only provider=dry-run is implemented in %s; disabling SMSBR",
+                self.version,
             )
+            self.enabled = False
+            return False
+
         self._service = SMSBRService(
             provider=DryRunSMSProvider(),
-            authorization=AuthorizationPolicy(cfg.authorized_callsigns),
-            aliases=cfg.aliases,
-            rate_limiter=SlidingWindowRateLimiter(cfg.rate_limit_per_hour, 3600),
+            authorization=AuthorizationPolicy(config.authorized_callsigns),
+            aliases=config.aliases,
+            rate_limiter=SlidingWindowRateLimiter(config.rate_limit_per_hour, 3600),
         )
+        self.enabled = True
+        return True
 
-    def command(self, fromcall, message, ack):
-        del ack
-        return self._service.handle(fromcall, message)
+    def help(self):
+        return "smsbr: @DESTINO mensagem"
+
+    def process(self, packet: packets.MessagePacket):
+        if not self.enabled:
+            return packets.NULL_MESSAGE
+
+        fromcall = packet.get("from")
+        message = packet.get("message_text")
+        if not fromcall or not message:
+            return packets.NULL_MESSAGE
+
+        return self._service.handle(str(fromcall), str(message))
