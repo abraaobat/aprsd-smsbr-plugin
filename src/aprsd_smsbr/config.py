@@ -31,7 +31,7 @@ class SMSBRConfig:
         return aliases
 
     @classmethod
-    def from_conf(cls, config) -> "SMSBRConfig":
+    def from_conf(cls, config) -> SMSBRConfig:
         group = config.smsbr_plugin
         calls = {
             item.strip().upper()
@@ -47,7 +47,7 @@ class SMSBRConfig:
         )
 
     @classmethod
-    def from_env(cls) -> "SMSBRConfig":
+    def from_env(cls) -> SMSBRConfig:
         calls = {
             item.strip().upper()
             for item in os.getenv("SMSBR_AUTHORIZED_CALLSIGNS", "").split(",")
