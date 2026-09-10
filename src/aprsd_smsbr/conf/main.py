@@ -38,14 +38,8 @@ SMSBR_OPTS = [
 
 
 def register_opts(config):
-    try:
-        config.register_group(SMSBR_GROUP)
-    except cfg.DuplicateOptError:
-        pass
-    try:
-        config.register_opts(SMSBR_OPTS, group=SMSBR_GROUP)
-    except cfg.DuplicateOptError:
-        pass
+    config.register_group(SMSBR_GROUP)
+    config.register_opts(SMSBR_OPTS, group=SMSBR_GROUP)
 
 
 def list_opts():
