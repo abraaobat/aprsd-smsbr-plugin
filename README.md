@@ -40,12 +40,12 @@ The destination can be a Brazilian number or a configured alias.
 - Callsigns are **denied by default** until explicitly authorized.
 - The initial SMS provider is **dry-run**; no SMS is sent.
 - Per-callsign rate limiting is enabled in the core service.
-- Secrets and real phone numbers belong in environment/configuration, never Git.
+- Secrets and real phone numbers belong in configuration, never Git.
 - APRS is not private; do not transmit secrets or sensitive information.
 
 ## Development setup
 
-Requires Python 3.11+ because the current APRSD 5.x line requires Python 3.11+.
+Requires Python 3.11+ because APRSD 5.x requires Python 3.11+.
 
 ```bash
 python3 -m venv .venv
@@ -55,20 +55,32 @@ pytest
 ruff check .
 ```
 
-## Prototype configuration
+## APRSD 5.x configuration
 
-```bash
-export SMSBR_PROVIDER=dry-run
-export SMSBR_AUTHORIZED_CALLSIGNS=PV8ABC
-export SMSBR_ALIASES='CASA=+5595999999999'
-export SMSBR_RATE_LIMIT_PER_HOUR=5
+SMSBR now follows APRSD's regex-command plugin API and exports its settings through
+`oslo.config`.
+
+Add the plugin class to APRSD and configure the dedicated group:
+
+```ini
+[DEFAULT]
+enabled_plugins = aprsd_smsbr.plugin.SMSBRPlugin
+
+[smsbr_plugin]
+enabled = true
+provider = dry-run
+authorized_callsigns = PV8ABC
+aliases = CASA=+5595999999999
+rate_limit_per_hour = 5
 ```
 
-Then enable the plugin class in your APRSD configuration:
+Multiple callsigns and aliases use comma-separated `ListOpt` values.
 
-```text
-aprsd_smsbr.plugin.SMSBRPlugin
-```
+Keep `provider = dry-run` during F2. A real SMS provider is intentionally deferred to
+F3, after APRSD integration and transport paths are validated.
+
+Environment loading remains available to the transport-independent core for local
+experiments, but the APRSD plugin path uses native `oslo.config` options.
 
 See `examples/aprsd.conf.example` and `docs/roadmap.md`.
 
@@ -78,14 +90,17 @@ See `examples/aprsd.conf.example` and `docs/roadmap.md`.
 
 - APRS command parser
 - Brazilian number normalization
-- Callsign allow-list
+- callsign allow-list
 - aliases
 - rate limiting
 - dry-run provider
-- APRSD adapter scaffold
+- APRSD 5.x regex-command adapter
+- native APRSD / `oslo.config` options
 
 ### Planned
 
+- APRSD dev-tooling integration test
+- APRS-IS and TCP KISS/Dire Wolf integration validation
 - real SMS API provider
 - USB GSM/4G modem provider
 - bidirectional SMS -> APRS
@@ -99,8 +114,8 @@ See `examples/aprsd.conf.example` and `docs/roadmap.md`.
 - Dire Wolf via APRSD KISS
 - DigiPi through its APRS/Dire Wolf stack
 
-The APRSD adapter will be validated against the exact current APRSD 5.x plugin API
-before the first real SMS provider is enabled.
+The adapter is aligned with the current APRSD 5.x command-plugin contract. F2 remains
+open until the APRSD dev-tooling and APRS-IS/TCP-KISS integration paths are exercised.
 
 ## Documentation
 
