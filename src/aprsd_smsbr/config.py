@@ -6,8 +6,8 @@ standalone/domain tests, but the APRSD plugin path uses ``from_conf``.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import os
+from dataclasses import dataclass, field
 
 from .parser import normalize_br_phone
 
@@ -33,8 +33,13 @@ class SMSBRConfig:
     @classmethod
     def from_conf(cls, config) -> "SMSBRConfig":
         group = config.smsbr_plugin
+        calls = {
+            item.strip().upper()
+            for item in group.authorized_callsigns
+            if item.strip()
+        }
         return cls(
-            authorized_callsigns={item.strip().upper() for item in group.authorized_callsigns if item.strip()},
+            authorized_callsigns=calls,
             aliases=cls._parse_aliases(list(group.aliases)),
             rate_limit_per_hour=group.rate_limit_per_hour,
             provider=group.provider.strip().lower(),
@@ -49,11 +54,13 @@ class SMSBRConfig:
             if item.strip()
         }
         aliases = cls._parse_aliases(os.getenv("SMSBR_ALIASES", "").split(","))
+        enabled_values = {"1", "true", "yes", "on"}
 
         return cls(
             authorized_callsigns=calls,
             aliases=aliases,
             rate_limit_per_hour=int(os.getenv("SMSBR_RATE_LIMIT_PER_HOUR", "5")),
             provider=os.getenv("SMSBR_PROVIDER", "dry-run").strip().lower(),
-            enabled=os.getenv("SMSBR_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"},
+            enabled=os.getenv("SMSBR_ENABLED", "false").strip().lower()
+            in enabled_values,
         )
