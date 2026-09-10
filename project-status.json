@@ -1,27 +1,29 @@
 {
   "schemaVersion": 1,
   "projectId": "aprsd-smsbr",
-  "updatedAt": "2026-09-09T23:15:00-04:00",
-  "status": "F2 • transport validation",
+  "updatedAt": "2026-09-10T19:18:00-04:00",
+  "status": "F2 • transport drivers validados em CI",
   "statusClass": "validate",
-  "progress": 31,
+  "progress": 36,
   "roadmap": "F0–F8 • F2 ativo",
-  "current": "O núcleo seguro, adaptador APRSD, configuração oslo.config e CI contra APRSD publicado/upstream estão validados. O plugin também passa pelo comando real `aprsd dev test-plugin` usando provider=dry-run, provando carregamento e execução pelo PluginManager sem APRS-IS, RF ou SMS real.",
+  "current": "O núcleo seguro, adaptador APRSD, oslo.config, CI e aprsd dev test-plugin estão validados. Os drivers reais APRSD de APRS-IS e TCP KISS agora também passam por smoke tests determinísticos contra servidores/sockets locais: handshake/login/envio APRS-IS e frame-send KISS foram exercitados sem rede pública, RF ou SMS real.",
   "architecture": "APRS-IS ou Rádio/Dire Wolf/KISS → APRSD → SMSBR command plugin → policy/rate limit → provider; dry-run permanece obrigatório em F2",
-  "next": "Validar APRS-IS e TCP KISS/Dire Wolf como transportes APRSD mantendo o SMSBR em dry-run; depois encerrar F2 e iniciar a seleção controlada do primeiro provider real em F3.",
-  "action": "Executar somente os dois transport gates restantes: APRS-IS → TCP KISS/Dire Wolf.",
+  "next": "Executar validação operacional com um serviço APRS-IS autorizado e um Dire Wolf TCP KISS real; depois encerrar F2 e iniciar a seleção controlada do primeiro provider real em F3.",
+  "action": "Restam somente os transport gates operacionais externos: APRS-IS real autorizado → Dire Wolf TCP KISS de bancada.",
   "subprojects": [
     "Safe outbound core ✓",
     "APRSD adapter + oslo.config ✓",
     "Released/upstream CI ✓",
     "aprsd dev test-plugin ✓",
-    "APRS-IS validation",
-    "TCP KISS / Dire Wolf validation",
+    "Local APRS-IS driver smoke ✓",
+    "Local TCP KISS driver smoke ✓",
+    "Operational APRS-IS validation",
+    "Real Dire Wolf bench",
     "SMS provider F3"
   ],
   "activity": {
-    "date": "2026-09-09",
-    "type": "validation",
-    "text": "SMSBR was successfully executed through APRSD's real dev test-plugin flow in CI with provider=dry-run; only APRS-IS and TCP KISS/Dire Wolf transport validation remain in F2."
+    "date": "2026-09-10",
+    "type": "transport-validation",
+    "text": "APRSD's real APRS-IS and TCP KISS drivers passed isolated local socket smoke tests in CI; public APRS-IS and real Dire Wolf/radio validation remain explicit operational gates."
   }
 }
