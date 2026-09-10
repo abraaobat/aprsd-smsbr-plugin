@@ -11,8 +11,10 @@ import logging
 from aprsd import packets, plugin
 from oslo_config import cfg
 
-from . import __version__
-from . import conf  # noqa: F401 - importing registers SMSBR oslo.config options
+from . import (
+    __version__,
+    conf,  # noqa: F401 - importing registers SMSBR oslo.config options
+)
 from .authorization import AuthorizationPolicy
 from .config import SMSBRConfig
 from .providers import DryRunSMSProvider
