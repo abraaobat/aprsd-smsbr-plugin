@@ -11,7 +11,7 @@
 - ADR baseline
 - Pull request governance checklist
 
-## F1 — Safe outbound core 🟡
+## F1 — Safe outbound core ✅
 
 - `@DESTINO mensagem` parser
 - Brazilian E.164 normalization
@@ -21,12 +21,19 @@
 - Dry-run provider
 - Unit tests
 
-## F2 — APRSD 5.x integration
+## F2 — APRSD integration 🟡
 
-- Validate plugin API against current APRSD 5.x
-- Native APRSD/oslo.config options
-- Integration test with `aprsd dev` tooling
-- Test APRS-IS and TCP KISS/Dire Wolf paths
+- [x] Validate command-plugin API against current APRSD upstream
+- [x] Adopt `APRSDRegexCommandPluginBase` + `process(packet)` contract
+- [x] Native APRSD / `oslo.config` options
+- [x] Export `oslo.config.opts` entry point
+- [x] Adapter/config integration tests
+- [x] Validate released APRSD and current upstream in CI
+- [x] Exercise SMSBR through `aprsd dev test-plugin` with `provider=dry-run`
+- [ ] Test APRS-IS path
+- [ ] Test TCP KISS / Dire Wolf path
+
+F2 remains open until both transport paths are validated. No real SMS provider is enabled during F2.
 
 ## F3 — First real SMS provider
 
