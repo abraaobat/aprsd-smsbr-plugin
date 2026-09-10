@@ -1,8 +1,8 @@
 from aprsd import plugin
 from oslo_config import cfg
 
-from aprsd_smsbr.config import SMSBRConfig
 from aprsd_smsbr.conf.main import register_opts
+from aprsd_smsbr.config import SMSBRConfig
 from aprsd_smsbr.plugin import SMSBRPlugin
 
 
