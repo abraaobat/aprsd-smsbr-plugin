@@ -30,10 +30,12 @@
 - [x] Adapter/config integration tests
 - [x] Validate released APRSD and current upstream in CI
 - [x] Exercise SMSBR through `aprsd dev test-plugin` with `provider=dry-run`
-- [ ] Test APRS-IS path
-- [ ] Test TCP KISS / Dire Wolf path
+- [x] Validate APRSD APRS-IS driver/login/send path against an isolated local server
+- [x] Validate APRSD TCP KISS driver/frame-send path against an isolated local socket
+- [ ] Operational APRS-IS service validation
+- [ ] Real Dire Wolf TCP KISS bench validation
 
-F2 remains open until both transport paths are validated. No real SMS provider is enabled during F2.
+F2 remains open until the operational transport paths are validated outside the isolated CI harness. No real SMS provider is enabled during F2, and the deterministic transport smoke never connects to public APRS-IS or keys a radio.
 
 ## F3 — First real SMS provider
 

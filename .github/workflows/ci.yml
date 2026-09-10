@@ -40,3 +40,5 @@ jobs:
           --aprs-login PV8ABC
           -p aprsd_smsbr.plugin.SMSBRPlugin
           '@CASA Teste dry-run via aprsd dev'
+      - name: Exercise APRSD transports against local sockets
+        run: python scripts/transport_smoke.py
