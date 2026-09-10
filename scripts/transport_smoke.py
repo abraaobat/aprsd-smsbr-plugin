@@ -12,12 +12,11 @@ import socket
 import threading
 from contextlib import closing
 
-from oslo_config import cfg
-
 from aprsd import conf  # noqa: F401 - importing registers APRSD config options
 from aprsd.client.drivers.aprsis import APRSISDriver
 from aprsd.client.drivers.tcpkiss import TCPKISSDriver
 from aprsd.packets import core
+from oslo_config import cfg
 
 CONF = cfg.CONF
 
@@ -98,7 +97,9 @@ def kiss_handler(conn: socket.socket, events: queue.Queue[tuple[str, bytes]]) ->
     if frame[0] != 0xC0 or frame[-1] != 0xC0:
         raise AssertionError(f"KISS frame missing FEND boundaries: {frame!r}")
     if frame[1] != 0x00:
-        raise AssertionError(f"expected KISS data-frame command 0x00, got {frame[1]:#x}")
+        raise AssertionError(
+            f"expected KISS data-frame command 0x00, got {frame[1]:#x}"
+        )
 
 
 def validate_aprsis() -> None:
@@ -117,7 +118,9 @@ def validate_aprsis() -> None:
     if not driver.connected or not driver.login_success():
         raise AssertionError(f"APRS-IS local login failed: {driver.login_failure()}")
     if driver.server_string != "LOCAL-SMSBR":
-        raise AssertionError(f"unexpected APRS-IS server string: {driver.server_string!r}")
+        raise AssertionError(
+            f"unexpected APRS-IS server string: {driver.server_string!r}"
+        )
 
     driver.send(make_message())
     driver.close()
