@@ -1,6 +1,9 @@
-# APRSD 5.x example fragment for SMSBR.
+# APRSD 5.x example configuration for SMSBR.
+# This file is safe for local/dev validation: provider=dry-run performs no SMS delivery.
 
 [DEFAULT]
+callsign = NOCALL
+owner_callsign = NOCALL
 enabled_plugins = aprsd_smsbr.plugin.SMSBRPlugin
 
 [smsbr_plugin]

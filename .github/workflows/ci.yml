@@ -33,3 +33,10 @@ jobs:
       - run: pip install 'pytest>=8' 'pytest-cov>=5' 'ruff>=0.8'
       - run: ruff check .
       - run: pytest
+      - name: Exercise plugin through APRSD dev tooling
+        run: >-
+          aprsd dev test-plugin
+          -c examples/aprsd.conf.example
+          --aprs-login PV8ABC
+          -p aprsd_smsbr.plugin.SMSBRPlugin
+          '@CASA Teste dry-run via aprsd dev'
