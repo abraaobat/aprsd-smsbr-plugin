@@ -1,8 +1,14 @@
-# APRSD 5.x example fragment.
-# Exact configuration syntax can vary by APRSD deployment; the SMSBR v0.1
-# prototype reads its own options from environment variables.
+# APRSD 5.x example fragment for SMSBR.
 
 [DEFAULT]
 enabled_plugins = aprsd_smsbr.plugin.SMSBRPlugin
 
-# Then export the variables shown in ../.env.example before starting APRSD.
+[smsbr_plugin]
+enabled = true
+provider = dry-run
+authorized_callsigns = PV8ABC
+aliases = CASA=+5595999999999
+rate_limit_per_hour = 5
+
+# Keep provider=dry-run until a real provider is explicitly configured and
+# validated. APRS traffic is not private; never place secrets in messages.
