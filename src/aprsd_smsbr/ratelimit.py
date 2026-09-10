@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-import time
 
 
 @dataclass(slots=True)

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "projectId": "aprsd-smsbr",
+  "updatedAt": "2026-09-09T22:27:00-04:00",
+  "status": "F2 APRSD 5.x em validação",
+  "statusClass": "validate",
+  "progress": 24,
+  "roadmap": "F0–F8 • F2 ativo",
+  "current": "F0 e o núcleo seguro de saída estão implementados. A F2 agora possui adaptador alinhado ao contrato APRSD 5.x, configuração nativa oslo.config, entry point de opções e testes de integração do adaptador em PR.",
+  "architecture": "APRS-IS ou Rádio/Dire Wolf/KISS → APRSD 5.x → SMSBR command plugin → policy/rate limit → provider; dry-run permanece obrigatório nesta fase",
+  "next": "Fazer o CI da PR ficar verde e então exercitar aprsd dev, APRS-IS e TCP KISS/Dire Wolf antes de encerrar F2.",
+  "action": "Validar a PR F2 e executar os transport tests mantendo o provider em dry-run.",
+  "subprojects": [
+    "Safe outbound core ✓",
+    "APRSD 5.x adapter",
+    "oslo.config",
+    "APRS-IS validation",
+    "TCP KISS / Dire Wolf validation",
+    "SMS provider F3"
+  ],
+  "activity": {
+    "date": "2026-09-09",
+    "type": "integration",
+    "text": "F2 avançou com correção do adaptador para APRSDRegexCommandPluginBase/process(packet), opções oslo.config e testes dedicados; transportes reais seguem como gates pendentes."
+  }
+}
